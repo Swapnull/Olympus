@@ -11,6 +11,7 @@ class Apollo{
 		//functions
 		Apollo();
 		void addLight(int, int, int);
-		void setColor(int, int, int, int);
+		void setColorRGB(int, int, int, int);
+        void setColorText(int, String);
 };
 #endif
