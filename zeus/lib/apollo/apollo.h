@@ -6,7 +6,7 @@
 class Apollo{
 	private:
 		int _pins[4][3];
-        int _id;
+        int _id = 0;
 	public:
 		//functions
 		Apollo();
