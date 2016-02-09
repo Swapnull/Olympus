@@ -11,17 +11,24 @@ void setup()
 {
     Serial.begin(9600);
     //apollo.addLight(2, 3, 4);
-    anemoi.addSensor(2, 3, 200);
-    hermes.addMotor(5, 6, 7);
+    //anemoi.addSensor(2, 3, 200);
+    //hermes.addMotor(5, 6, 7);
+    hermes.addServo(9);
 }
 
 void loop()
 {
-    Serial.println(anemoi.getDistanceCentimeters(0));
+    //Serial.println(anemoi.getDistanceCentimeters(0));
     /*apollo.setColorRGB(0, 255, 0, 0);
     delay(500);
     apollo.setColorRGB(0, 0, 255, 0);
     delay(500);
     apollo.setColorRGB(0, 0, 0, 255);
     delay(500);*/
+    hermes.turnLeft();
+    delay(50);
+    hermes.turnRight();
+    delay(50);
+    hermes.straight();
+    delay(300);
 }

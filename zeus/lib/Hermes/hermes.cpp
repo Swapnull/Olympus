@@ -5,6 +5,7 @@
 Hermes::Hermes(){
     int _pins[4][3];
     int _id = 0;
+    Servo _steering;
 }
 
 void Hermes::addMotor(int enablePin, int controlPin1, int controlPin2){
@@ -36,4 +37,18 @@ void Hermes::moveBackward(int id, int speed){
     digitalWrite(_pins[id][2], HIGH);
 
     setSpeed(id, speed);
+}
+
+void Hermes::addServo(int pin){
+    _steering.attach(pin);
+}
+
+void Hermes::turnLeft(){
+    _steering.write(0);
+}
+void Hermes::turnRight(){
+    _steering.write(180);
+}
+void Hermes::straight(){
+    _steering.write(90);
 }
