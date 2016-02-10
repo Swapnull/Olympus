@@ -5,8 +5,6 @@
 
 
 Apollo::Apollo(){
-    int _pins [4][3]; //[lightID][r/g/b] so [2][2] gets 3rd light blue pin.
-    int _id = 0;
 }
 
 void Apollo::addLight(int red, int green, int blue){
