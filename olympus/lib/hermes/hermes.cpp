@@ -3,8 +3,6 @@
 #include "hermes.h"
 
 Hermes::Hermes(){
-    int _pins[4][3];
-    int _id = 0;
     Servo _steering;
 }
 

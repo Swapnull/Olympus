@@ -3,15 +3,14 @@
 #ifndef __apollo
 #define __apollo
 
+
 class Apollo{
 	private:
-		int _pins[4][3];
-        int _id;
 	public:
 		//functions
-		Apollo();
-		void addLight(int, int, int);
-		void setColorRGB(int, int, int, int);
-        void setColorText(int, String);
+		Apollo(int pins[]);
+		void turnOn(int pin);
+		void turnOff(int pin);
+		void blink(int pin, int interval = 500);
 };
 #endif

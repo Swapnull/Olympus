@@ -1,28 +1,23 @@
-#include "apollo.h"
-//#include "anemoi.h"
-//#include "hermes.h"
+#include <zeus.h>
+//#include <apollo.h>
 
 
-Apollo apollo = Apollo();
-//Anemoi anemoi = Anemoi();/
-//Hermes hermes = Hermes();
+//setup the control system
+Zeus zeus = Zeus();
 
 void setup()
 {
     Serial.begin(9600);
-    apollo.addLight(2, 3, 4);
-    //anemoi.addSensor(2, 3, 200);
-    //hermes.addMotor(5, 6, 7);
-    //hermes.addServo(9);
+
+    int apolloPins[] = {5, 6, 7};
+    zeus.apolloSetup(apolloPins);
+    //zeus.hermesSetup(7, 8, 9);
+
+    //int anemoiPins[][2] = {{2,3}, {4,5}, {6, 7}, {8, 9}};
+    //zeus.anemoiSetup(anemoiPins);
 }
 
 void loop()
 {
-    //Serial.println(anemoi.getDistanceCentimeters(0));
-    apollo.setColorRGB(0, 255, 0, 0);
-    delay(500);
-    apollo.setColorRGB(0, 0, 255, 0);
-    delay(500);
-    apollo.setColorRGB(0, 0, 0, 255);
-    delay(500);
+
 }

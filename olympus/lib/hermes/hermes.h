@@ -7,7 +7,7 @@
 class Hermes{
 	private:
 		int _pins[4][3];
-        int _id = 0;
+        int _id;
 		Servo _steering;
 	public:
 		//functions
