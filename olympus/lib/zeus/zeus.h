@@ -8,13 +8,12 @@
 #define __zeus
 
 class Zeus{
-	private:
-		Apollo _apollo = NULL;
 	public:
-		//functions
+		Hermes hermes;
+		Apollo apollo = NULL;
 		Zeus();
-        void hermesSetup(int, int, int);
-        void apolloSetup(int[]);
+        void hermesSetup(int enablePin, int controlPin1, int controlPin2);
+        void apolloSetup(int pins[]);
 		void anemoiSetup(int[][2]);
 };
 #endif
