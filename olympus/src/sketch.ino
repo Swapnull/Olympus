@@ -3,7 +3,7 @@
 
 
 //setup the control system
-//Zeus zeus = Zeus();
+Zeus zeus = Zeus();
 
 void setup()
 {
@@ -16,13 +16,14 @@ void setup()
     //int anemoiPins[][2] = {{2,3}, {4,5}, {6, 7}, {8, 9}};
     Serial.println("setting up");
 
-    /*int anemoiPins[][2] = {{7, 6}};
-    zeus.anemoiSetup(anemoiPins);*/
+    int anemoiPins[][3] = {{12, 11, 200}};
+    zeus.anemoiSetup(anemoiPins, 1);
 }
 
 void loop()
 {
-    //int distance = zeus.anemoi.getDistanceCentimeters(0);
+    int distance = zeus.anemoi.getDistanceCentimeters(0);
     Serial.print("distance: ");
-    //Serial.println(distance);
+    Serial.println(distance);
+    delay(500);
 }

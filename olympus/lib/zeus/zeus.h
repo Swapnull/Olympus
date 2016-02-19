@@ -15,6 +15,6 @@ class Zeus{
 		Zeus();
         void hermesSetup(int enablePin, int controlPin1, int controlPin2);
         void apolloSetup(int pins[]);
-		void anemoiSetup(int pins[][2]);
+		void anemoiSetup(int pins[][3], int length);
 };
 #endif

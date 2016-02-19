@@ -17,10 +17,9 @@ void Zeus::apolloSetup(int pins[]){
     apollo = Apollo(pins);
 }
 
-void Zeus::anemoiSetup(int pins[][2]){
-    int length = (sizeof(pins)/sizeof(pins[0]));
-    Serial.println(length);
+void Zeus::anemoiSetup(int pins[][3], int length){
     for(int i=0;i < length ;i++){
-        anemoi.addSensor(pins[i][0], pins[i][1]);
+        Serial.println("Adding Sensor");
+        anemoi.addSensor(pins[i][0], pins[i][1], pins[i][2]);
     }
 }
