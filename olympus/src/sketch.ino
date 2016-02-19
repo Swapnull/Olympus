@@ -3,7 +3,7 @@
 
 
 //setup the control system
-Zeus zeus = Zeus();
+Zeus zeus;
 
 void setup()
 {
@@ -11,7 +11,7 @@ void setup()
 
     //int apolloPins[] = {5, 6, 7};
     //zeus.apolloSetup(apolloPins);
-    //zeus.hermesSetup(7, 8, 9);
+    zeus.hermesSetup(7, 8, 9);
 
     //int anemoiPins[][2] = {{2,3}, {4,5}, {6, 7}, {8, 9}};
     Serial.println("setting up");
@@ -22,8 +22,6 @@ void setup()
 
 void loop()
 {
-    int distance = zeus.anemoi.getDistanceCentimeters(0);
-    Serial.print("distance: ");
-    Serial.println(distance);
+    zeus.collisionDetection();
     delay(500);
 }
