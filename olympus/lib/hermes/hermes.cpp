@@ -2,57 +2,65 @@
 
 #include "hermes.h"
 
+
 Hermes::Hermes(Anemoi anemoi){
     _anemoi = anemoi;
 }
 
-void Hermes::addMotor(int enablePin, int controlPin1, int controlPin2){
+void Hermes::addMotor(int directionPin, int speedPin){
 
-    pinMode(enablePin, OUTPUT);
-    pinMode(controlPin1, OUTPUT);
-    pinMode(controlPin2, OUTPUT);
+    pinMode(directionPin, OUTPUT);
+    pinMode(speedPin, OUTPUT);
 
-    _pins[_id][0] = enablePin;
-    _pins[_id][1] = controlPin1;
-    _pins[_id][2] = controlPin2;
-    _pins[_id][3] = 0; //speed
+    _motors[_id][0] = directionPin;
+    _motors[_id][1] = speedPin;
+    _motors[_id][2] = 0; 
+    _id++;
+}
+
+void Hermes::setSpeed(int speed){
+    for(int i=0; i <= _id; i++){
+        this->setSpeed(i, speed);
+    }
 }
 
 void Hermes::setSpeed(int id, int speed){
-    _pins[id][3] = speed;
-    analogWrite(_pins[id][0], speed);
+    _motors[id][3] = speed;
+    analogWrite(_motors[id][1], speed);
 }
 
 int Hermes::getSpeed(int id){
-    return _pins[id][3];
+    return _motors[id][2];
 }
 
 int Hermes::getMotorCount(){
     return _id;
 }
 
-void Hermes::moveForward(int id, int speed){
-    //set one high and one low due to motors facing inwards
-    digitalWrite(_pins[id][1], HIGH);
-    digitalWrite(_pins[id][2], LOW);
+void Hermes::moveForward(int speed){
+    //set two high and two low due to motors facing inwards
 
-    setSpeed(id, speed);
+    for(int i=0; i <= _id; i++){
+        if(i < 2){
+            digitalWrite(_motors[i][0], HIGH);
+        }else{
+            digitalWrite(_motors[i][0], LOW);
 
-    Serial.print("Motor ");
-    Serial.print(id);
-    Serial.print(" is moving forwards at ");
+        }
+    }
+
+    this->setSpeed(speed);
+
+    Serial.print("Motors are moving forwards at ");
     Serial.println(speed);
 }
 
 void Hermes::moveBackward(int id, int speed){
     //set one high and one low due to motors facing inwards
-    digitalWrite(_pins[id][1], LOW);
-    digitalWrite(_pins[id][2], HIGH);
-
     setSpeed(id, speed);
 }
 
-void Hermes::stop(int id){
+void Hermes::stop(){
     Serial.println("Stopping!");
-    setSpeed(id, 0);
+    setSpeed(0);
 }

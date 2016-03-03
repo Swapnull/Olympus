@@ -6,18 +6,19 @@
 
 class Hermes{
 	private:
-		int _pins[4][4];
-        int _id;
+		int _motors[4][3];
+        int _id = 0;
 		Anemoi _anemoi;
 	public:
 		//functions
 		Hermes(Anemoi anemoi);
-		void addMotor(int enablePin, int controlPin1, int controlPin2);
+		void addMotor(int directionPin, int speedPin);
+		void setSpeed(int speed);
 		void setSpeed(int id, int speed);
 		int getSpeed(int id);
 		int getMotorCount();
-        void moveForward(int id, int speed);
+        void moveForward(int speed);
         void moveBackward(int id, int speed);
-		void stop(int id);
+		void stop();
 };
 #endif
