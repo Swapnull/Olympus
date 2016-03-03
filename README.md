@@ -5,8 +5,7 @@ This is a self driving car project that I will be undertaking for my final year 
 - *Arduino Uno* - The basic version of the Arudino micro-controller board, a lot of the early development was done on these.
 - *Arduino Due* - The largest version of the Arduino micro-controller board. Most of the later development was done using one of these.
 - *HC-SR04 Ultrasonic Sensors* - The main sensing component that the prototype uses.
-- *XBee v1.0 w/Sheild and Explorer* - The controller that allowed the Arduino to wirelessly speak to other devices, primarily, a laptop.  
-- 
+- *XBee v1.0 w/Sheild and Explorer* - The controller that allowed the Arduino to wirelessly speak to other devices, primarily, a laptop. 
 
 ### Software used
 - *[Atom](https://github.com/atom/atom)* - A hackable text editor built by Github.

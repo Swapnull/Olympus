@@ -1,18 +1,24 @@
 #include <Arduino.h>
+#include <anemoi.h>
 
 #ifndef __hermes
 #define __hermes
 
 class Hermes{
 	private:
-		int _pins[4][3];
-        int _id;
+		int _motors[4][3];
+        int _id = 0;
+		Anemoi _anemoi;
 	public:
 		//functions
-		Hermes();
-		void addMotor(int enablePin, int controlPin1, int controlPin2);
+		Hermes(Anemoi anemoi);
+		void addMotor(int directionPin, int speedPin);
+		void setSpeed(int speed);
 		void setSpeed(int id, int speed);
-        void moveForward(int id, int speed);
+		int getSpeed(int id);
+		int getMotorCount();
+        void moveForward(int speed);
         void moveBackward(int id, int speed);
+		void stop();
 };
 #endif

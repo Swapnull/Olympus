@@ -11,10 +11,11 @@ class Zeus{
 	public:
 		Apollo apollo = NULL;
 		Anemoi anemoi;
-		Hermes hermes;
+		Hermes hermes = Hermes(anemoi);
 		Zeus();
-        void hermesSetup(int enablePin, int controlPin1, int controlPin2);
+        void hermesSetup(int pins[][2]);
         void apolloSetup(int pins[]);
 		void anemoiSetup(int pins[][3], int length);
+		void collisionDetection();
 };
 #endif
