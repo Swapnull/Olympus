@@ -25,5 +25,11 @@ void loop()
 {
  //   zeus.collisionDetection();
     zeus.hermes.moveForward(200);
-    delay(500);
+    delay(5000);
+    zeus.hermes.stop();
+    delay(1000);
+    zeus.hermes.moveBackward(100);
+    delay(5000);
+    zeus.hermes.stop();
+    delay(1000);
 }

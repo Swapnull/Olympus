@@ -13,12 +13,15 @@ class Hermes{
 		//functions
 		Hermes(Anemoi anemoi);
 		void addMotor(int directionPin, int speedPin);
-		void setSpeed(int speed);
-		void setSpeed(int id, int speed);
-		int getSpeed(int id);
+		void changeSpeed(int currentSpeed, int targetSpeed);
+		int getSpeed(int id = 0);
 		int getMotorCount();
         void moveForward(int speed);
-        void moveBackward(int id, int speed);
+        void moveBackward(int speed);
+        void setSpeed(int speed);
+		void setSpeed(int id, int speed);
 		void stop();
+		void turnLeft();
+		void turnRight();
 };
 #endif
