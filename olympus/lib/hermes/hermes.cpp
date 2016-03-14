@@ -48,7 +48,7 @@ int Hermes::getSpeed(int id){
 void Hermes::moveForward(int speed){
     //set two high and two low due to motors facing inwards
 
-    for(int i=0; i <= _id; i++){
+    for(int i=0; i < _id; i++){
         if(i < 2){
             digitalWrite(_motors[i][0], HIGH);
         }else{
@@ -56,6 +56,7 @@ void Hermes::moveForward(int speed){
 
         }
     }
+
 
     this->changeSpeed(this->getSpeed(), speed);   
 
@@ -65,7 +66,7 @@ void Hermes::moveForward(int speed){
 
 // Accellerates backwards to desired speed 
 void Hermes::moveBackward(int speed){
-    for(int i=0; i <= _id; i++){
+    for(int i=0; i < _id; i++){
         if(i < 2){
             digitalWrite(_motors[i][0], LOW);
         }else{
@@ -108,24 +109,28 @@ void Hermes::stop(){
 // Turn left at current speed
 void Hermes::turnLeft(){
     Serial.println("Turning Left");
-   for(int i=0; i <= _id; i++){
-        if(i % 2 == 1){
-            digitalWrite(_motors[i][0], HIGH);
-        }else{
+   for(int i=0; i < _id; i++){
+        if(i == 0 or i == 3){
             digitalWrite(_motors[i][0], LOW);
+        }else{
+            digitalWrite(_motors[i][0], HIGH);
 
         }
     }
+
 }
+
+
+
 
 // Turn right at current speed
 void Hermes::turnRight(){
     Serial.println("Turning Right");
-   for(int i=0; i <= _id; i++){
-        if(i % 2 == 1){
-            digitalWrite(_motors[i][0], LOW);
-        }else{
+    for(int i=0; i < _id; i++){
+        if(i == 0 or i == 3){
             digitalWrite(_motors[i][0], HIGH);
+        }else{
+            digitalWrite(_motors[i][0], LOW);
 
         }
     }

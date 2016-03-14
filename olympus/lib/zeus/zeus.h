@@ -13,9 +13,13 @@ class Zeus{
 		Anemoi anemoi;
 		Hermes hermes = Hermes(anemoi);
 		Zeus();
-        void hermesSetup(int pins[][2]);
-        void apolloSetup(int pins[]);
-		void anemoiSetup(int pins[][3], int length);
+		void addButton(int pins[], int length = 1);
+		void addSonar(int pins[][3], int length = 1);
+		void initAnemoi();
+		void initApollo(int pins[], int length = 1);
+        void initHermes(int pins[][2]);
+      
+		
 		void collisionDetection();
 };
 #endif

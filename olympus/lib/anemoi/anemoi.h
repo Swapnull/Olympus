@@ -7,13 +7,19 @@
 class Anemoi{
 	private:
 		NewPing _sonar[4] = {NewPing(0, 0, 0), NewPing(0, 0, 0), NewPing(0, 0, 0), NewPing(0, 0, 0)};
-        int _pins[][3]; // 2nd dimention is trig, echo, maxdist
-		int _id = 0;
+		int _sonarID = 0;
+
+		int _buttonPins[4] = {0, 0, 0, 0};
+		int _buttonID = 0;
+
 	public:
 		//functions
+
 		Anemoi();
-        void addSensor(int, int, int);
-		int getDistanceCentimeters(int);
+        void addSonar(int trig, int echo, int maxdist);
+        void addButton(int pin);
+		int getSonarDistance(int id = 0); // assume there is only one if not specified
+		void waitForButton(int id = 0); // assume there is only one if not specified
 };
 
 #endif
