@@ -6,20 +6,14 @@
 
 class Anemoi{
 	private:
-		NewPing _sonar[4] = {NewPing(0, 0, 0), NewPing(0, 0, 0), NewPing(0, 0, 0), NewPing(0, 0, 0)};
-		int _sonarID = 0;
+		int _trig = 0, _echo = 0, _maxDist = 0;
+		NewPing _sonar = NewPing(_trig, _echo, _maxDist);
 
-		int _buttonPins[4] = {0, 0, 0, 0};
-		int _buttonID = 0;
 
 	public:
 		//functions
-
-		Anemoi();
-        void addSonar(int trig, int echo, int maxdist);
-        void addButton(int pin);
-		int getSonarDistance(int id = 0); // assume there is only one if not specified
-		void waitForButton(int id = 0); // assume there is only one if not specified
+        Anemoi(int trig, int echo, int maxDist = 200);
+		int ping_cm(); // assume there is only one if not specified
 };
 
 #endif

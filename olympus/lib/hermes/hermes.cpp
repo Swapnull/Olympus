@@ -3,8 +3,7 @@
 #include "hermes.h"
 
 // constructor
-Hermes::Hermes(Anemoi anemoi){
-    _anemoi = anemoi;
+Hermes::Hermes(){
 }
 
 // Add a motor
@@ -102,8 +101,6 @@ void Hermes::stop(){
     for(int i = this->getSpeed(); i > 0; i--){
             this->setSpeed(i);
     }
-
-    Serial.println("Stopped");
 }
 
 // Turn left at current speed
@@ -119,9 +116,6 @@ void Hermes::turnLeft(){
     }
 
 }
-
-
-
 
 // Turn right at current speed
 void Hermes::turnRight(){

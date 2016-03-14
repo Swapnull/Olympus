@@ -8,10 +8,9 @@ class Hermes{
 	private:
 		int _motors[4][3];
         int _id = 0;
-		Anemoi _anemoi;
 	public:
 		//functions
-		Hermes(Anemoi anemoi);
+		Hermes();
 		void addMotor(int directionPin, int speedPin);
 		void changeSpeed(int currentSpeed, int targetSpeed);
 		int getSpeed(int id = 0);
