@@ -4,6 +4,10 @@
 #ifndef __hermes
 #define __hermes
 
+#define CLOCKWISE 0
+#define ANTICLOCKWISE 1
+
+
 class Hermes{
 	private:
 		int _motors[4][3];
@@ -20,7 +24,6 @@ class Hermes{
         void setSpeed(int speed);
 		void setSpeed(int id, int speed);
 		void stop();
-		void turnLeft();
-		void turnRight();
+		void turn(int direction = 0, int angle = 90, int speed = 50);
 };
 #endif

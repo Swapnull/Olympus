@@ -8,8 +8,7 @@ class Anemoi{
 	private:
 		int _trig = 0, _echo = 0, _maxDist = 0;
 		NewPing _sonar = NewPing(_trig, _echo, _maxDist);
-
-
+		
 	public:
 		//functions
         Anemoi(int trig, int echo, int maxDist = 200);

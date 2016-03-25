@@ -9,12 +9,16 @@ Zeus::Zeus(){}
 
 
 void Zeus::addSonar(int trig, int echo, int maxDist){
-    sonar[_sonarCount] = Anemoi(trig, echo, maxDist);   
+    sonar[_sonarCount] = NewPing(trig, echo, maxDist);   
     _sonarCount++;
 }
 
-void Zeus::initApollo(int pins[], int length){
+/*void Zeus::initApollo(int pins[], int length){
     apollo = Apollo(pins, length);
+}*/
+
+void Zeus::runThea(){
+   thea.followBlocks();
 }
 
 void Zeus::initHermes(int pins[][2]) {
@@ -23,45 +27,57 @@ void Zeus::initHermes(int pins[][2]) {
     }
 }
 
-void Zeus::wander(){
-    bool stuck = false;
-    const int SAFEDIST = 10, MAXRETRY = 3, MAXSTUCK = 5;
-    int pingDist = 0, total = 0, stuckCount = 0;
 
-    while(!stuck){
-        hermes.moveForward(200);
-        pingDist = sonar[FRONT].ping_cm();
-        while(pingDist <= SAFEDIST && pingDist > 0 ){
-            // stop the motors            
-            hermes.stop();
-
-            // ping 3 more times, for accuracy.
-            for(int i = 0; i < MAXRETRY; i++){
-                total += sonar[FRONT].ping_cm();
-                delay(500); 
-            }
-
-            // get an average of the 3 pings and check if its still below SAFEDIST
-            if((total / 3) < SAFEDIST){
-                //definitely an obstical, turn right to continue exploring
-                hermes.moveForward(50);
-                hermes.turnRight();
-                delay(2500);
-                hermes.stop();
-                stuckCount++;
-            }
-            total = 0; // reset total counter
-
-            if(stuckCount == MAXSTUCK){
-                // if we have been stuck 5 times, assume we are not getting out and exit
-                Serial.println("This bot is stuck and can no longer wander");
-                stuck = true;
-            }else{
-                //not stuck so get the current reading.
-                pingDist = sonar[FRONT].ping_cm();
-            }
-        }
-        stuckCount = 0;
-        delay(500);
-    }
+bool Zeus::isObstructed(){
+    int distance = sonar[FRONT].ping_cm();
+    return ((distance >= 0) && (distance <= SAFEDIST));
 }
+
+void Zeus::avoid(){
+    bool obstructed = isObstructed();
+
+    while(obstructed){
+        //hermes.moveForward(200);
+        obstructed = isObstructed();
+
+        // stop the motors            
+        hermes.stop();
+
+        switch(_direction){
+            case FRONT:
+                hermes.turn(CLOCKWISE, 90, 50); // turn to face right
+                _direction = RIGHT;
+                break;
+            case RIGHT:
+                hermes.turn(ANTICLOCKWISE, 180, 50); // turn to face left
+                _direction = LEFT;
+                break;
+            case LEFT :
+                hermes.turn(ANTICLOCKWISE, 90, 50); // turn to face back
+                _direction = BACK;
+                break;
+            case BACK :
+                hermes.turn(ANTICLOCKWISE, 180, 50); // turn to face foward
+                _direction = FRONT;
+                break;
+            default   :
+                Serial.println("There has been an error");
+                return; 
+        }
+    }
+    _direction = FRONT; // whatever the new heading is, is now forward. 
+}
+
+void Zeus::wander(){
+    unsigned int timer = millis();
+    unsigned int timeout = random(15)*1000;
+    while((millis() - timer) < timeout){
+        if(isObstructed()){
+            avoid();
+        }
+    }
+
+    //once timeout has completed, run code
+    delay(random(15)*1000); // delay a random time between 0 and 15 seconds
+    hermes.turn(CLOCKWISE, random(360), random(100)); //move a random angle at a random speed
+} 

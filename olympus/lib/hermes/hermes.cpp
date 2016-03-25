@@ -23,12 +23,12 @@ void Hermes::changeSpeed(int currentSpeed, int targetSpeed){
     if(targetSpeed > currentSpeed){
         // need to speed up
         for(int i = currentSpeed; i < targetSpeed; i++){
-            this->setSpeed(i);
+            setSpeed(i);
         }
     }else{
         // need to slow down
         for(int i = currentSpeed; i > targetSpeed; i--){
-            this->setSpeed(i);
+            setSpeed(i);
         }
     }
 }
@@ -57,10 +57,11 @@ void Hermes::moveForward(int speed){
     }
 
 
-    this->changeSpeed(this->getSpeed(), speed);   
+    changeSpeed(getSpeed(), speed);   
 
     Serial.print("Motors are moving forwards at ");
     Serial.println(speed);
+
 }
 
 // Accellerates backwards to desired speed 
@@ -74,8 +75,7 @@ void Hermes::moveBackward(int speed){
         }
     }
 
-    this->changeSpeed(this->getSpeed(), speed);   
-
+    changeSpeed(getSpeed(), speed);   
 
     Serial.print("Motors are moving backwards at ");
     Serial.println(speed);
@@ -83,8 +83,8 @@ void Hermes::moveBackward(int speed){
 
 // Sets the speed of all the motors
 void Hermes::setSpeed(int speed){
-    for(int i=0; i <= _id; i++){
-        this->setSpeed(i, speed);
+    for(int i=0; i < _id; i++){
+        setSpeed(i, speed);
     }
 }
 
@@ -104,28 +104,24 @@ void Hermes::stop(){
 }
 
 // Turn left at current speed
-void Hermes::turnLeft(){
-    Serial.println("Turning Left");
-   for(int i=0; i < _id; i++){
-        if(i == 0 or i == 3){
-            digitalWrite(_motors[i][0], LOW);
-        }else{
-            digitalWrite(_motors[i][0], HIGH);
-
-        }
-    }
-
-}
-
-// Turn right at current speed
-void Hermes::turnRight(){
-    Serial.println("Turning Right");
+void Hermes::turn(int direction, int angle, int speed){
+    Serial.print("Turning Left ");
+    Serial.println(angle);
+    
     for(int i=0; i < _id; i++){
-        if(i == 0 or i == 3){
-            digitalWrite(_motors[i][0], HIGH);
-        }else{
+        if(((i == 0 || i == 3) && direction == ANTICLOCKWISE) || ((i == 1 || i == 2) && direction == CLOCKWISE) ){
             digitalWrite(_motors[i][0], LOW);
-
+            Serial.print(i);
+            Serial.println(" LOW");
+        }else{
+            digitalWrite(_motors[i][0], HIGH);
+            Serial.print(i);
+            Serial.println(" HIGH");
         }
     }
+
+    setSpeed(speed);
+    int timeout = (angle * speed) / 2;
+    delay(timeout);
+    stop();
 }
