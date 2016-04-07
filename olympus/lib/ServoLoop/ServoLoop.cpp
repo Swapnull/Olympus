@@ -24,7 +24,7 @@ void ServoLoop::update(int32_t error)
   { 
     velocity = (error * _propGain + (error - _prevError) * _deriGain)>>10;
     
-    Serial.print(error); 
+    /*Serial.print(error); 
     Serial.print(" "); 
     Serial.print(_propGain);
     Serial.print(" "); 
@@ -32,7 +32,7 @@ void ServoLoop::update(int32_t error)
     Serial.print(" "); 
     Serial.print(_deriGain); 
     Serial.print(" ");
-    Serial.println(velocity);
+    Serial.println(velocity);*/
 
     pos += velocity;
     if (pos>RCS_MAX_POS) 

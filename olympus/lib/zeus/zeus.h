@@ -32,7 +32,7 @@ class Zeus{
 	public:
 		//Apollo apollo = NULL;
 		//Anemoi sonar[];
-		NewPing sonar[];
+		NewPing sonar = NewPing(0, 0, 0);
 		Hermes hermes;
 		Thea thea; 
 		Zeus();
@@ -44,5 +44,6 @@ class Zeus{
         bool isObstructed();
 		void avoid();
 		void wander(); 
+		void follow();
 };
 #endif

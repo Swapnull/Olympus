@@ -13,10 +13,13 @@ class Thea{
 		uint16_t blocks;
 	public:
 		Pixy pixy;
+		ServoLoop panLoop = ServoLoop(300, 500);  
+		ServoLoop tiltLoop = ServoLoop(500, 700);
 
 		Thea();
 		void followBlocks();
 		void scanForBlocks();
+		void stop();
 
 };
 #endif

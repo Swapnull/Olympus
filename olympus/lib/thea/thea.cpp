@@ -2,8 +2,7 @@
 
 #include "thea.h"
 
-ServoLoop panLoop(300, 500);  // Servo loop for pan
-ServoLoop tiltLoop(500, 700); // Servo loop for tilt 
+
 
 // constructor
 Thea::Thea(){
@@ -12,8 +11,7 @@ Thea::Thea(){
 }
 
 // Track blocks via the Pixy pan/tilt mech
-void Thea::followBlocks()
-{
+void Thea::followBlocks(){
   blocks = pixy.getBlocks();
 
   if(blocks){
@@ -25,4 +23,8 @@ void Thea::followBlocks()
 
     pixy.setServos(panLoop.pos, tiltLoop.pos);
   }
+}
+
+void Thea::stop(){
+	pixy.setServos(X_CENTER, Y_CENTER);
 }

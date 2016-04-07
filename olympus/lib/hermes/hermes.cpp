@@ -12,6 +12,7 @@ void Hermes::addMotor(int directionPin, int speedPin){
     pinMode(directionPin, OUTPUT);
     pinMode(speedPin, OUTPUT);
 
+
     _motors[_id][0] = directionPin;
     _motors[_id][1] = speedPin;
     _motors[_id][2] = 0; 
@@ -20,6 +21,11 @@ void Hermes::addMotor(int directionPin, int speedPin){
 
 // gradually change the speed
 void Hermes::changeSpeed(int currentSpeed, int targetSpeed){
+
+    if(targetSpeed > _maxSpeed){
+        targetSpeed = _maxSpeed;
+    }
+
     if(targetSpeed > currentSpeed){
         // need to speed up
         for(int i = currentSpeed; i < targetSpeed; i++){
@@ -33,7 +39,7 @@ void Hermes::changeSpeed(int currentSpeed, int targetSpeed){
     }
 }
 
-// Returns the number of motors
+// returns the number of motors
 int Hermes::getMotorCount(){
     return _id;
 }
@@ -55,7 +61,6 @@ void Hermes::moveForward(int speed){
 
         }
     }
-
 
     changeSpeed(getSpeed(), speed);   
 
@@ -90,22 +95,45 @@ void Hermes::setSpeed(int speed){
 
 // Sets the speed of one motor
 void Hermes::setSpeed(int id, int speed){
+    //ensure not faster than maxSpeed
+    if(speed > _maxSpeed){
+        speed = _maxSpeed;
+    }
+    //Serial.print("setting speed: "); Serial.println(speed);
+
     _motors[id][2] = speed;
     analogWrite(_motors[id][1], speed);
 }
 
+void Hermes::setLeftSpeed(int speed){
+    digitalWrite(_motors[0][0], HIGH);
+    digitalWrite(_motors[2][0], LOW);
+    setSpeed(0, speed);
+    setSpeed(2, speed);
+}
+
+void Hermes::setRightSpeed(int speed){
+    digitalWrite(_motors[1][0], HIGH);
+    digitalWrite(_motors[3][0], LOW);
+    setSpeed(1, speed);
+    setSpeed(3, speed);
+}
+
+void Hermes::setMaxSpeed(int maxSpeed){
+    _maxSpeed = maxSpeed;
+}
+
+int Hermes::getMaxSpeed(){
+    return _maxSpeed; 
+}
+
 // Gradually stops the motors
 void Hermes::stop(){
-    Serial.println("Stopping");
-
-    for(int i = this->getSpeed(); i > 0; i--){
-            this->setSpeed(i);
-    }
+    setSpeed(0);
 }
 
 // Turn left at current speed
 void Hermes::turn(int direction, int angle, int speed){
-    Serial.print("Turning Left ");
     Serial.println(angle);
     
     for(int i=0; i < _id; i++){
@@ -121,7 +149,13 @@ void Hermes::turn(int direction, int angle, int speed){
     }
 
     setSpeed(speed);
-    int timeout = (angle * speed) / 2;
-    delay(timeout);
+
+    while(turning){
+        Serial.println("turning");
+        //do nothing
+    }
     stop();
 }
+
+
+
