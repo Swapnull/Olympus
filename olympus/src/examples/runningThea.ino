@@ -14,7 +14,7 @@ void setup()
     zeus.hermes.setMaxSpeed(50);
 
     //sonar
-    zeus.addSonar(8, 9, 200);
+    zeus.addSonar(37, 36, 200);
 
 
 }

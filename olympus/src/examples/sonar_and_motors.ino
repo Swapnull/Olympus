@@ -14,7 +14,7 @@ void setup()
     zeus.hermes.moveForward(200);
 
     //sonar
-    zeus.addSonar(8, 9, 200);
+    zeus.addSonar(37, 36, 200);
 
 }
 
