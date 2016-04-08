@@ -52,7 +52,7 @@ int Hermes::getSpeed(int id){
 // Accellerates forwards to desired speed
 void Hermes::moveForward(int speed){
     //set two high and two low due to motors facing inwards
-
+    Serial.println("moving forward");
     for(int i=0; i < _id; i++){
         if(i < 2){
             digitalWrite(_motors[i][0], HIGH);
@@ -63,10 +63,6 @@ void Hermes::moveForward(int speed){
     }
 
     changeSpeed(getSpeed(), speed);   
-
-    Serial.print("Motors are moving forwards at ");
-    Serial.println(speed);
-
 }
 
 // Accellerates backwards to desired speed 
@@ -81,9 +77,6 @@ void Hermes::moveBackward(int speed){
     }
 
     changeSpeed(getSpeed(), speed);   
-
-    Serial.print("Motors are moving backwards at ");
-    Serial.println(speed);
 }
 
 // Sets the speed of all the motors
@@ -134,28 +127,24 @@ void Hermes::stop(){
 
 // Turn left at current speed
 void Hermes::turn(int direction, int angle, int speed){
+    Serial.print("turning: ");
     Serial.println(angle);
-    
+    _angle = angle;
+
     for(int i=0; i < _id; i++){
         if(((i == 0 || i == 3) && direction == ANTICLOCKWISE) || ((i == 1 || i == 2) && direction == CLOCKWISE) ){
             digitalWrite(_motors[i][0], LOW);
-            Serial.print(i);
-            Serial.println(" LOW");
         }else{
             digitalWrite(_motors[i][0], HIGH);
-            Serial.print(i);
-            Serial.println(" HIGH");
         }
     }
 
-    setSpeed(speed);
+    turning = true;
 
-    while(turning){
-        Serial.println("turning");
-        //do nothing
-    }
-    stop();
+    setSpeed(speed);
 }
 
-
-
+int Hermes::getAngleSteps(){
+    //value of STEPSPER90 will need changing for every rig.
+    return (_angle / 90) * STEPSPER90;
+}

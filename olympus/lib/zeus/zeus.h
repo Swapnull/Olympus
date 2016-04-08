@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <hermes.h>
 #include <apollo.h>
-#include <anemoi.h>
+#include <NewPing.h>
 #include <thea.h>
 
 #ifndef __zeus
@@ -31,7 +31,6 @@ class Zeus{
 		uint32_t _lastBlockTime = 0;
 	public:
 		//Apollo apollo = NULL;
-		//Anemoi sonar[];
 		NewPing sonar = NewPing(0, 0, 0);
 		Hermes hermes;
 		Thea thea; 
@@ -42,7 +41,7 @@ class Zeus{
         void initHermes(int pins[][2]);
         void runThea();
         bool isObstructed();
-		void avoid();
+		bool avoid();
 		void wander(); 
 		void follow();
 };

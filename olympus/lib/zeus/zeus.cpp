@@ -29,57 +29,80 @@ void Zeus::initHermes(int pins[][2]) {
 
 bool Zeus::isObstructed(){
     int distance = sonar.ping_cm();
-    Serial.println(distance);
-    return ((distance >= 0) && (distance <= SAFEDIST));
+
+    return ((distance > 0) && (distance <= SAFEDIST));
 }
 
-void Zeus::avoid(){
-    bool obstructed = isObstructed();
+bool Zeus::avoid(){
+    bool wasObstructed = false;
 
-    while(obstructed){
-        //hermes.moveForward(200);
-        obstructed = isObstructed();
-        // stop the motors            
-        hermes.stop();
+    while(isObstructed()){
 
-        switch(_direction){
-            case FRONT:
-                hermes.turn(CLOCKWISE, 90, 50); // turn to face right
-                _direction = RIGHT;
-                break;
-            case RIGHT:
-                hermes.turn(ANTICLOCKWISE, 180, 50); // turn to face left
-                _direction = LEFT;
-                break;
-            case LEFT :
-                hermes.turn(ANTICLOCKWISE, 90, 50); // turn to face back
-                _direction = BACK;
-                break;
-            case BACK :
-                hermes.turn(ANTICLOCKWISE, 180, 50); // turn to face foward
-                _direction = FRONT;
-                break;
-            default   :
-                Serial.println("There has been an error");
-                return; 
+        wasObstructed = true;
+
+        if(!hermes.turning){
+            Serial.println(sonar.ping_cm());
+            switch(_direction){
+                case FRONT:
+                    hermes.turn(CLOCKWISE, 90, 50); // turn to face right
+                    _direction = RIGHT;
+                    break;
+                case RIGHT:
+                    hermes.turn(ANTICLOCKWISE, 180, 50); // turn to face left
+                    _direction = LEFT;
+                    break;
+                case LEFT :
+                    hermes.turn(ANTICLOCKWISE, 90, 50); // turn to face back
+                    _direction = BACK;
+                    break;
+                case BACK :
+                    hermes.turn(ANTICLOCKWISE, 180, 50); // turn to face foward
+                    _direction = FRONT;
+                    break;
+                default   :
+                    Serial.println("There has been an error");
+                    return false; 
+            }
+            delay(2000);
         }
     }
     _direction = FRONT; // whatever the new heading is, is now forward. 
+
+    //return whether avoidance needed to happen
+    return wasObstructed;
 }
 
 void Zeus::wander(){
-    unsigned int timeout = random(15)*1000;
-    unsigned int timer = millis();
+    randomSeed(analogRead(6)); //shuffle the random number generator.
 
-    while((millis() - timer) < timeout){
-        if(isObstructed()){
-            avoid();
+    unsigned int timeout = random(5)*1000;
+    unsigned int timer = millis();
+    bool contineWander = true;
+    int turnAngle = 0;
+
+    while(contineWander && analogRead(4) > 500){ //so potentiometer can stop movement
+        if(!hermes.turning){ // dont do anything if a turn is happening
+            if((millis() - timer) < timeout){
+                //continue moving
+                hermes.moveForward(100);
+
+                //call avoid and if used, reset the timeout
+                if(avoid()){
+                    //reset
+                    timeout = random(3, 7) * 1000;
+                    timer = millis() ;
+                }
+           
+            }else{
+                turnAngle = random(45, 360);
+                hermes.turn(CLOCKWISE, turnAngle, 100); //move a random angle at a random speed
+                delay((turnAngle / 90) * 1000);
+
+                timeout = random(3, 7) * 1000;
+                timer = millis();
+            }
         }
     }
-
-    //once timeout has completed, run code
-    delay(random(15)*1000); // delay a random time between 0 and 15 seconds
-    hermes.turn(CLOCKWISE, random(360), random(100)); //move a random angle at a random speed
 } 
 
 void Zeus::follow(){

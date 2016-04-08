@@ -1,11 +1,11 @@
 #include <Arduino.h>
-#include <anemoi.h>
 
 #ifndef __hermes
 #define __hermes
 
 #define CLOCKWISE 0
 #define ANTICLOCKWISE 1
+#define STEPSPER90 415 // will need changing for every rig.
 
 
 class Hermes{
@@ -13,10 +13,11 @@ class Hermes{
 		int _motors[4][3];
         int _id = 0;
         int _maxSpeed = 200;
-        volatile int _steps = 0;
-	public:
-		bool turning = false;
+        int _angle = 0;
 
+	public:
+		volatile bool turning = false;
+		volatile int steps = 0;
 		//functions
 		Hermes();
 		void addMotor(int directionPin, int speedPin);
@@ -33,5 +34,7 @@ class Hermes{
 		int getMaxSpeed();
 		void stop();
 		void turn(int direction = 0, int angle = 90, int speed = 50);
+		int getAngleSteps();
+
 };
 #endif
