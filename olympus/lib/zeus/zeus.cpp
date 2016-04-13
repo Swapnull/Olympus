@@ -41,7 +41,6 @@ bool Zeus::avoid(){
         wasObstructed = true;
 
         if(!hermes.turning){
-            Serial.println(sonar.ping_cm());
             switch(_direction){
                 case FRONT:
                     hermes.turn(CLOCKWISE, 90, 50); // turn to face right
@@ -80,13 +79,13 @@ void Zeus::wander(){
     bool contineWander = true;
     int turnAngle = 0;
 
-    while(contineWander && analogRead(4) > 500){ //so potentiometer can stop movement
+    while(contineWander && analogRead(4) > 500){ //if potentiometer is turned off, stop.
         if(!hermes.turning){ // dont do anything if a turn is happening
             if((millis() - timer) < timeout){
                 //continue moving
                 hermes.moveForward(100);
 
-                //call avoid and if used, reset the timeout
+                //call avoid and if obstructed, reset the timeout
                 if(avoid()){
                     //reset
                     timeout = random(3, 7) * 1000;
@@ -95,9 +94,10 @@ void Zeus::wander(){
            
             }else{
                 turnAngle = random(45, 360);
-                hermes.turn(CLOCKWISE, turnAngle, 100); //move a random angle at a random speed
-                delay((turnAngle / 90) * 1000);
+                hermes.turn(CLOCKWISE, turnAngle, 100); //move a random angle
+                delay((turnAngle / 90) * 1000); //give the turn time to finish
 
+                //reset the timeout
                 timeout = random(3, 7) * 1000;
                 timer = millis();
             }
@@ -105,31 +105,37 @@ void Zeus::wander(){
     }
 } 
 
+
+void Zeus::explore(int speed){
+    hermes.moveForward(speed);
+
+    if(isObstructed()){
+        avoid();
+    }else{
+        if(thea.pixy.getBlocks()){
+            follow();
+        }
+    } 
+}
+
 void Zeus::follow(){
     int32_t size = 200;
     int32_t followError = RCS_CENTER_POS - thea.panLoop.pos;  // How far off-center are we looking now?
-    int maxSpeed = hermes.getMaxSpeed();
+    int maxSpeed = hermes.getMaxSpeed(); 
 
     // Size is the area of the object.
-    // We keep a running average of the last 8.
-    if(thea.pixy.getBlocks() && !isObstructed()){
-        size += thea.pixy.blocks[0].width * thea.pixy.blocks[0].height; 
-        size -= size >> 3;
+    size += thea.pixy.blocks[0].width * thea.pixy.blocks[0].height; 
+    size -= size >> 3;
 
-        int forwardSpeed = constrain(maxSpeed - (size/256), -100, maxSpeed);
-        int32_t differential = (followError + (followError * forwardSpeed))>>8;
+    //get the forward speed
+    int forwardSpeed = constrain(maxSpeed - (size/256), -100, maxSpeed);
+    int32_t differential = (followError + (followError * forwardSpeed))>>8;
 
-     
-        // Adjust the left and right speeds by the steering differential.
-        int leftSpeed = abs(constrain(forwardSpeed + differential, -maxSpeed, maxSpeed));
-        int rightSpeed = abs(constrain(forwardSpeed - differential, -maxSpeed, maxSpeed));
-
-        Serial.print(leftSpeed);
-        Serial.print(" ");
-        Serial.println(rightSpeed);
-        
-        hermes.setLeftSpeed(leftSpeed);
-        hermes.setRightSpeed(rightSpeed);
-    }
-
+ 
+    // Adjust the left and right speeds by the steering differential.
+    int leftSpeed = abs(constrain(forwardSpeed + differential, -maxSpeed, maxSpeed));
+    int rightSpeed = abs(constrain(forwardSpeed - differential, -maxSpeed, maxSpeed));
+    
+    hermes.setLeftSpeed(leftSpeed);
+    hermes.setRightSpeed(rightSpeed);
 }
