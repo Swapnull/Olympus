@@ -6,11 +6,12 @@
 
 class Apollo{
 	private:
+		int _pins[];
 	public:
 		//functions
-		Apollo(int pins[]);
-		void turnOn(int pin);
-		void turnOff(int pin);
-		void blink(int pin, int interval = 500);
+		Apollo(int pins[], int length = 1);
+		void turnOn(int id = 0);
+		void turnOff(int id = 0);
+		void blink(int id = 0, int interval = 500);
 };
 #endif

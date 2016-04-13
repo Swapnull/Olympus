@@ -1,5 +1,4 @@
 #include <zeus.h>
-//#include <apollo.h>
 
 
 //setup the control system
@@ -8,22 +7,33 @@ Zeus zeus;
 void setup()
 {
     Serial.begin(9600);
+    
+    //motors
+    int motors[4][2] = {{25, 8}, {24, 9}, {23, 10}, {22, 11}};
+    zeus.initHermes(motors);
 
-    //int apolloPins[] = {5, 6, 7};
-    //zeus.apolloSetup(apolloPins);
-    int motors[4][2] = {{25, 4}, {24, 5}, {23, 6}, {22, 7}};
-    zeus.hermesSetup(motors);
+    zeus.addSonar(37, 36, 200);
 
-    //int anemoiPins[][2] = {{2,3}, {4,5}, {6, 7}, {8, 9}};
-    Serial.println("setting up");
+    attachInterrupt(digitalPinToInterrupt(2), turningInterrupt ,CHANGE);
 
-    //int anemoiPins[][3] = {{12, 11, 200}};
-    //zeus.anemoiSetup(anemoiPins, 1);
 }
 
 void loop()
 {
- //   zeus.collisionDetection();
-    zeus.hermes.moveForward(200);
-    delay(500);
+    //Serial.println(zeus.sonar.ping_cm());
+    if(analogRead(4) > 500){
+        zeus.wander();
+    }else{
+        zeus.hermes.stop();
+    }
+}
+
+void turningInterrupt(){
+   if(zeus.hermes.turning){
+        if(zeus.hermes.steps % zeus.hermes.getAngleSteps() == 0){
+            zeus.hermes.turning = false;
+            zeus.hermes.stop();
+        }
+        zeus.hermes.steps++;
+    }   
 }

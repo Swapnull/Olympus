@@ -2,24 +2,30 @@
 
 #include "apollo.h"
 
-Apollo::Apollo(int pins[]){
+Apollo::Apollo(int pins[], int length){
 	//setup the lights
-	int numOfPins = sizeof(pins)/sizeof(pins[0]);
-	for(int i = 0; i < numOfPins ; i++){
+	for(int i = 0; i < length ; i++){
 		pinMode(pins[i], OUTPUT);
+		this->turnOn(pins[i]);
+
+		_pins[i] = pins[i];
 	}
+
 }
 
-void Apollo::turnOn(int pin){
-	digitalWrite(pin, HIGH);
+void Apollo::turnOn(int id){
+	Serial.println(id);
+	Serial.print("turning on pin ");
+	Serial.println(_pins[0]);
+	digitalWrite(_pins[id], HIGH);
 }
 
-void Apollo::turnOff(int pin){
-	digitalWrite(pin, LOW);
+void Apollo::turnOff(int id){
+	digitalWrite(_pins[id], LOW);
 }
 
-void Apollo::blink(int pin, int interval){
-	digitalWrite(pin, HIGH);
+void Apollo::blink(int id, int interval){
+	digitalWrite(_pins[id], HIGH);
 	delay(interval);
-	digitalWrite(pin, LOW);
+	digitalWrite(_pins[id], LOW);
 }

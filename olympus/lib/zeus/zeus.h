@@ -1,21 +1,48 @@
 #include <Arduino.h>
 #include <hermes.h>
 #include <apollo.h>
-#include <anemoi.h>
-
+#include <NewPing.h>
+#include <thea.h>
 
 #ifndef __zeus
 #define __zeus
 
+// constants to be used for accessing arrays
+#define FRONT 0
+#define RIGHT 1
+#define BACK  2
+#define LEFT  3
+
+// constatnts to be used for wheels
+#define BACKLEFT 0
+#define BACKRIGHT 1
+#define FRONTLEFT 2
+#define FRONTRIGHT 3
+
+// safe distance of sonars
+#define SAFEDIST 10 
+#define MAXRETRY 3
+
 class Zeus{
+
+	private:
+		int _sonarCount = 0;
+		int _direction = 0;
+		uint32_t _lastBlockTime = 0;
 	public:
-		Apollo apollo = NULL;
-		Anemoi anemoi;
-		Hermes hermes = Hermes(anemoi);
+		//Apollo apollo = NULL;
+		NewPing sonar = NewPing(0, 0, 0);
+		Hermes hermes;
+		Thea thea; 
 		Zeus();
-        void hermesSetup(int pins[][2]);
-        void apolloSetup(int pins[]);
-		void anemoiSetup(int pins[][3], int length);
-		void collisionDetection();
+		//void addButton(int pins[], int length = 1);
+		void addSonar(int trig, int echo, int maxDist = 200);
+		void initApollo(int pins[], int length = 1);
+        void initHermes(int pins[][2]);
+        void runThea();
+        bool isObstructed();
+		bool avoid();
+		void wander(); 
+		void follow();
 };
 #endif
